@@ -21,7 +21,7 @@ def register():
     if not request_data:
         return jsonify({"msg": "Missing JSON in request"}), 400
     
-    required_fields = ['email', 'password', 'first_name', 'last_name']
+    required_fields = ['email', 'password', 'first_name', 'last_name', 'phone', 'date_of_birth']
 
     """"Check for missing fields."""
     for field in required_fields:
@@ -67,7 +67,7 @@ def register():
         db.session.rollback()
         return jsonify({"msg": str(e)}), 500
     
-@auth_bp.route('/login',methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
 
     """Login a user and return JWT tokens"""
@@ -117,7 +117,20 @@ def profile():
     return jsonify({
         'user': user.to_dict()
     })
+
+@auth_bp.route('/delete', methods=['DELETE'])
+@jwt_required()
+def delete():
+    user_id = get_jwt_identity()
+    user = User.find_by_id(user_id)
     
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+    
+    user.delete()
+
+    return jsonify({"msg": "User deleted successfully"}), 200
+
 ## Errors token handlers ##
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload):
