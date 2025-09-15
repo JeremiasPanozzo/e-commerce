@@ -14,6 +14,7 @@ from .product_review import ProductReview
 from .product_variant import ProductVariant
 from .user import User
 from .wishlist import Wishlist
+from .revoked_token import RevokedToken
 
 __all__ = [
     'Address', 
@@ -31,5 +32,6 @@ __all__ = [
     'ProductVariant',
     'product_categories',
     'User',
-    'Wishlist'
+    'Wishlist',
+    'RevokedToken'
     ]

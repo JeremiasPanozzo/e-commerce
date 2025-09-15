@@ -8,7 +8,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 
-def create_app(config_name='development'):
+def create_app(config_name):
     
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -22,9 +22,17 @@ def create_app(config_name='development'):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
+    from app.api.auth import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')    
+
     with app.app_context():
-        from app.models import Address, BaseModel, Cart, CartItem, Category, Coupon, Order, OrderItem, Payment, Product, ProductImage, ProductReview, ProductVariant, product_categories, User, Wishlist
-        
+        from app.models import (Address, BaseModel, Cart, CartItem, 
+                                Category, Coupon, Order, OrderItem, 
+                                Payment, Product, ProductImage, 
+                                ProductReview, ProductVariant, product_categories, 
+                                User, Wishlist, RevokedToken
+                )
+
     @app.errorhandler(404)
     def not_found(error):
         return {'error': 'Resource not found'}, 404

@@ -1,0 +1,20 @@
+{
+    "first_name":"Lucas",
+    "last_name":"Rodriguez",
+    "email":"lucas@gmail.com",
+    "password":"Lucas12345!"
+}
+{
+    "first_name":"Romina",
+    "last_name":"Gonzales",
+    "email":"romigonzales@gmail.com",
+    "password":"Romina12345!",
+    "date_of_birth": "02/07/1972"
+}
+{
+    "first_name":"Clarisa",
+    "last_name":"Gonzales",
+    "email":"clarigonzales@gmail.com",
+    "password":"Clarisa1234!",
+    "date_of_birth": "03/07/2002"
+}

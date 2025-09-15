@@ -23,6 +23,14 @@ class Address(BaseModel):
         address_parts.extend([self.city, self.state, self.postal_code])
         return ", ".join(address_parts)
     
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def delet(self):
+        db.session.delete(self)
+        db.session.commit()
+        
     def to_dict(self):
         return {
             'id': str(self.id),

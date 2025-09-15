@@ -13,8 +13,8 @@ class Category(BaseModel):
     is_active = db.Column(db.Boolean, default=True)
     sort_order = db.Column(db.Integer, default=0)
 
-    children = db.relationship('Category', backref=db.backref('parent', remote_side=[id]))
-    
+    children = db.relationship('Category', backref=db.backref('parent', remote_side=lambda: [Category.id]))
+
     def to_dict(self):
         return {
             'id': str(self.id),
