@@ -8,7 +8,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 
-def create_app(config_name):
+def create_app(config_name='development'):
     
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -22,8 +22,13 @@ def create_app(config_name):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    from app.api.auth import auth_bp
+    from app.api.auth_endpoints import auth_bp
+    from app.api.user_endpoints import edit_user_bp
+    from app.api.products_endpoints import products_bp
+
     app.register_blueprint(auth_bp, url_prefix='/api/auth')    
+    app.register_blueprint(edit_user_bp, url_prefix='/api/user')
+    app.register_blueprint(products_bp, url_prefix='/api/products')
 
     with app.app_context():
         from app.models import (Address, BaseModel, Cart, CartItem, 
