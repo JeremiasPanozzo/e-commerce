@@ -1,6 +1,7 @@
 from app import db
 from .basemodel import BaseModel
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.exc import OperationalError, InterfaceError, DBAPIError
 
 class Address(BaseModel):
     __tablename__ = 'addresses'
@@ -15,6 +16,17 @@ class Address(BaseModel):
     is_default = db.Column(db.Boolean, default=False)
     address_type = db.Column(db.String(20), default='shipping')
 
+    def __init__(self, user_id, street_address, apartment, city, state, postal_code, country='Argentina', is_default=False, address_type='shipping'):
+        self.user_id = user_id
+        self.street_address = street_address
+        self.apartment = apartment
+        self.city = city
+        self.state = state
+        self.postal_code = postal_code
+        self.country = country
+        self.is_default = is_default
+        self.address_type = address_type
+
     @property
     def full_address(self):
         address_parts = [self.street_address]
@@ -24,13 +36,21 @@ class Address(BaseModel):
         return ", ".join(address_parts)
     
     def save(self):
-        db.session.add(self)
-        db.session.commit()
-    
-    def delet(self):
-        db.session.delete(self)
-        db.session.commit()
-        
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except (OperationalError, InterfaceError, DBAPIError) as db_error:
+            db.session.rollback()
+            raise RuntimeError("Database error occurred") from db_error
+
+    def delete(self):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except (OperationalError, InterfaceError, DBAPIError) as db_error:
+            db.session.rollback()
+            raise RuntimeError("Database error occurred") from db_error
+
     def to_dict(self):
         return {
             'id': str(self.id),
