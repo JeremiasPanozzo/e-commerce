@@ -59,7 +59,6 @@ python run
 - POST /api/auth/register → Registrar usuario
 - POST /api/auth/login → Iniciar sesión
 - POST /api/auth/logout → Cerrar sesión
-- GET /api/auth/profile → Ver perfil
 - DELETE /api/auth/delete → Eliminar cuenta
 
 🛍️ Carrito (/api/cart)
@@ -76,6 +75,7 @@ python run
 
 - POST /api/user/change_password → Cambiar contraseña
 - POST /api/user/address → Editar dirección
+- GET /api/user/profile → Ver perfil
 
 📦 Productos (/api/products)
 
